@@ -24,12 +24,12 @@ const Sidebar: FC<SidebarProps> = ({children}) => {
                             <RxDashboard size={20} />
                         </div>
                     </Link>
-                    <Link href='/'>
+                    <Link href='/customers'>
                         <div className='bg-gray-100 p-3 cursor-pointer hover:bg-gray-200 rounded-lg inline-block'>
                             <RxPerson size={20} />
                         </div>
                     </Link>
-                    <Link href='/'>
+                    <Link href='/orders'>
                         <div className='bg-gray-100 p-3 cursor-pointer hover:bg-gray-200 rounded-lg inline-block'>
                             <HiOutlineShoppingBag size={20} />
                         </div>
