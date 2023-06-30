@@ -4,6 +4,7 @@ import {Inter} from 'next/font/google'
 import Sidebar from "@/components/Sidebar";
 import {AnimatePresence, motion} from "framer-motion";
 import {usePathname} from "next/navigation";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 const inter = Inter({subsets: ['latin']})
 //
@@ -18,14 +19,21 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     const route = usePathname()
+    const queryClient = new QueryClient()
     console.log(route)
     return (
         <html lang="en">
         <body className={inter.className}>
         <Sidebar>
             <AnimatePresence mode="wait">
-                <motion.div initial={{opacity: 0, x: '100vw'}} animate={{opacity: 1, x: 0}} exit={{opacity: 0, x: '-100vw'}} transition={{duration: 1}} key={route}>
+                <motion.div initial={{opacity: 0, x: '-100vw'}} animate={{opacity: 1, x: '0'}} exit={{opacity: 0, x: '100vw'}} transition={{
+                    type: "spring",
+                    damping: 10,
+                    stiffness: 100,
+                }} key={route}>
+                    <QueryClientProvider client={queryClient}>
                     {children}
+                    </QueryClientProvider>
                 </motion.div>
             </AnimatePresence>
         </Sidebar>

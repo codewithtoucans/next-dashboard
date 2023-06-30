@@ -1,13 +1,36 @@
+'use client'
 import {FaShoppingBag} from "react-icons/fa";
-import {data} from "@/data";
+import {useRouter} from "next/navigation";
+import {useQuery} from "@tanstack/react-query";
+
+async function getUserData() {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users')
+    const userData = await response.json()
+    return userData ?? []
+}
 
 const RecentOrders = () => {
+    const router = useRouter()
+    const {data, isLoading, isError, error } = useQuery<User[]>({
+        queryKey: ['user'],
+        queryFn: getUserData,
+    })
+
+    if (isLoading) {
+        return <div>Loading</div>
+    }
+
+    if (isError) {
+        console.log(error)
+        return
+    }
+
     return (
         <div className='w-full col-span-1 lg:h-[70vh] bg-white rounded-lg h-[50vh] border p-4 overflow-scroll relative'>
             <h1>Recent Orders</h1>
             <ul>
-                {data.map(item => (
-                    <li key={item.id} className='flex bg-gray-100 my-3 p-2 items-center hover:bg-gray-200 rounded-lg'>
+                {data!.map(item => (
+                    <li key={item.id} className='flex bg-gray-100 my-3 p-2 items-center hover:bg-gray-200 rounded-lg cursor-pointer' onClick={() => router.push('/customers')}>
                         <div className='p-3 bg-purple-100 rounded-lg'>
                             <FaShoppingBag className='text-purple-800'/>
                         </div>
