@@ -2,18 +2,14 @@
 import {FaShoppingBag} from "react-icons/fa";
 import {useRouter} from "next/navigation";
 import {useQuery} from "@tanstack/react-query";
-
-async function getUserData() {
-    const response = await fetch('https://jsonplaceholder.typicode.com/users')
-    const userData = await response.json()
-    return userData ?? []
-}
+import {getUserData} from "@/data";
 
 const RecentOrders = () => {
     const router = useRouter()
     const {data, isLoading, isError, error } = useQuery<User[]>({
         queryKey: ['user'],
         queryFn: getUserData,
+        staleTime: 60 * 60 * 1000
     })
 
     if (isLoading) {
@@ -22,7 +18,7 @@ const RecentOrders = () => {
 
     if (isError) {
         console.log(error)
-        return
+        return <div>Something was wrong</div>
     }
 
     return (

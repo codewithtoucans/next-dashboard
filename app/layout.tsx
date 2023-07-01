@@ -19,23 +19,30 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     const route = usePathname()
-    const queryClient = new QueryClient()
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                refetchOnWindowFocus: false
+            }
+        }
+    })
     console.log(route)
     return (
         <html lang="en">
         <body className={inter.className}>
         <Sidebar>
-            <AnimatePresence mode="wait">
-                <motion.div initial={{opacity: 0, x: '-100vw'}} animate={{opacity: 1, x: '0'}} exit={{opacity: 0, x: '100vw'}} transition={{
-                    type: "spring",
-                    damping: 10,
-                    stiffness: 100,
-                }} key={route}>
-                    <QueryClientProvider client={queryClient}>
-                    {children}
-                    </QueryClientProvider>
-                </motion.div>
-            </AnimatePresence>
+            <QueryClientProvider client={queryClient}>
+                <AnimatePresence mode="wait">
+                    <motion.div initial={{opacity: 0, x: '-100vw'}} animate={{opacity: 1, x: '0'}}
+                                exit={{opacity: 0, x: '100vw'}} transition={{
+                        type: "spring",
+                        damping: 10,
+                        stiffness: 100,
+                    }} key={route}>
+                        {children}
+                    </motion.div>
+                </AnimatePresence>
+            </QueryClientProvider>
         </Sidebar>
         </body>
         </html>
